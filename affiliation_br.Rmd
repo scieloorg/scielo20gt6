@@ -1,0 +1,118 @@
+---
+title: "Proportion of Brazil as the affiliation of documents in SciELO Brazil"
+output:
+  html_document:
+    df_print: paged
+---
+
+Let's load from SciELO Analytics
+the CSV of documents affiliations in SciELO Brazil:
+
+```{r}
+# We shouldn't interpret Namibia (NA) as "not available"
+doc_aff <- read.csv("tabs_bra/documents_affiliations.csv", na.strings = c())
+doc_aff
+```
+
+R already simplifies the column names in some sense,
+replacing the whitespaces and special characters by a dot.
+We can see the column names with:
+
+```{r}
+names(doc_aff)
+```
+
+Categorical fields are known as *factors*.
+
+```{r}
+class(doc_aff$document.type)
+class(doc_aff$document.affiliation.country.ISO.3166)
+```
+
+The *levels* of a factor are the values one *factor* vector can have.
+
+```{r}
+levels(doc_aff$document.type)
+levels(doc_aff$document.affiliation.country.ISO.3166)
+```
+
+Most entries are research articles,
+we'll work only with this document type:
+
+```{r}
+summary(doc_aff$document.type)
+par(mar = c(3, 9, 2, 2) + .1)
+barplot(summary(doc_aff$document.type), horiz = TRUE, las = 1)
+articles <- doc_aff[doc_aff$document.type == "research-article",]
+articles
+```
+
+Most affiliation entries are from Brazil
+(that's somewhat expected for a Brazilian collection).
+
+```{r}
+barplot(summary(articles$document.affiliation.country.ISO.3166,
+                maxsum = 10))
+```
+
+Let's build a dataset with just four columns:
+
+* One regarding the document publication year;
+* One regarding to the PID, a way to identify an article;
+* One logical, `TRUE` if an article have a Brazilian affiliation;
+* One logical, `TRUE` if an article have a non-Brazilian affiliation.
+
+We should remove the empty country entries,
+since they might belong to any country (Brazil or other).
+Using two columns should be cleaner to understand
+than merging the Brazilian/non-Brazilian affiliation as a single column.
+
+```{r}
+dataset <- data.frame(
+  articles$document.publishing.year,
+  articles$document.publishing.ID..PID.SciELO.,
+  articles$document.affiliation.country.ISO.3166 == "BR",
+  grepl("[^B].|.[^R]", articles$document.affiliation.country.ISO.3166)
+)
+names(dataset) <- c("year", "pid", "br", "not_br")
+dataset <- dataset[dataset$br | dataset$not_br,]
+dataset
+```
+
+As all entries are either `br` or `not_br`,
+we just need to calculate the mean of `br` for each PID.
+We'll use `dplyr` to group that result by the PID.
+
+```{r}
+library(dplyr)
+proportions <- dataset %>% group_by(pid) %>% summarize(mean(br), max(year))
+proportions <- proportions[c(2, 3)]
+names(proportions) <- c("prop", "year")
+proportions
+```
+
+Let's see the evolution of the mean of these proportions:
+
+```{r}
+mprops <- proportions %>% group_by(year) %>% summarize(mean(prop))
+mprops
+plot(
+  mprops,
+  type = "l",
+  cex.main = 1,
+  main = paste("Mean proportion of BR affiliation",
+               "in research articles (SciELO Brazil)",
+               sep = " ")
+)
+```
+
+Is that significantly decreasing?
+
+```{r}
+regr <- lm(mean.prop. ~ year, data.frame(mprops))
+summary(regr)
+confint(regr, level = .95)
+```
+
+Yes! The slope (`year`, last row of `confint` result)
+is negative for the entire $95\%$ confidence interval.
