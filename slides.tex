@@ -1,0 +1,263 @@
+\documentclass[utf8]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage{tabu}
+
+\mode<presentation>
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{footline}{\leavevmode\hbox{%
+  \begin{beamercolorbox}[wd=.35\paperwidth, ht=2.25ex, dp=1ex, center]
+                        {author in head/foot}
+    \usebeamerfont{author in head/foot}
+      \insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.65\paperwidth, ht=2.25ex, dp=1ex, center]
+                        {title in head/foot}
+    \usebeamerfont{title in head/foot}
+      \insertshortsubtitle \hfill
+      \insertframenumber\,/\,\inserttotalframenumber
+  \end{beamercolorbox}%
+}}
+
+\title{WG6 Report}
+\subtitle{SciELO 20 Years}
+\date{2018-09-25}
+\author{Danilo J. S. Bellini}
+
+
+\begin{document}
+
+
+\begin{frame}
+  \begin{beamercolorbox}[sep=8pt, center, rounded=true, shadow=true]{title}%
+    \usebeamerfont{title}\usebeamercolor[fg]{title}%
+      \inserttitle\par%
+    \vskip0.25em%
+    \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}%
+      \insertsubtitle\par%
+  \end{beamercolorbox}
+  \vfill
+  \begin{tabu} to \textwidth {rX}
+    \emph{WG6 presentation title:} &
+      Workshop on the use of data from the SciELO database \\
+    \\
+    \emph{Lecturer/speaker/rapporteur:} &
+      Danilo J. S. Bellini \\
+    \emph{Group coordinator:} &
+      Gustavo Fonseca \\
+    \emph{Executive secretary:} &
+      Carolina Tanigushi \\
+    \\
+    \emph{WG6 date:} &
+      2018-09-24 \\
+    \emph{Report date:} &
+      2018-09-25 \\
+    \\
+    \emph{Venue:} &
+      Tivoli Mofarrej São Paulo Hotel \\
+  \end{tabu}
+\end{frame}
+
+
+\begin{frame}{Summary}
+  During the workshop, these had been done:
+
+  \begin{itemize}
+    \item Brief introduction to the data analysis processes,
+          emphasizing data access, data cleaning
+          and exploratory data analysis
+    \item \emph{Hands-on} examples using Python and R,
+          with emphasis in the \emph{Pandas} library resources,
+          showing how data munging, normalization, data visualization
+          and other data analysis processes can be performed
+    \item Explanation of data analyses previously performed
+          on data coming from SciELO and external sources
+  \end{itemize}
+
+  Most of the time was spent on exploratory data analysis,
+  interpretation of descriptive statistics and visualization.
+  Some highlights of what had been studied in more depth include:
+
+  \begin{itemize}
+    \item Hirsch index
+    \begin{itemize}
+      \item Google Scholar's \texttt{h5-index} and \texttt{h5-median}
+      \item Calculation from raw Dimensions' data
+      \item SCImagoJR's H index
+    \end{itemize}
+    \item Field Citation Ratio (FCR) from Dimensions
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Tools}
+  Two programming languages had been used,
+  besides several:
+  \begin{itemize}
+    \item Python
+    \begin{itemize}
+      \item IPython / Jupyter Notebook
+      \item Python built-in modules
+            (\texttt{csv}, \texttt{statistics}, \texttt{urllib},
+             \texttt{json}, \texttt{glob}, \texttt{os}, \texttt{re},
+             \texttt{collections}, \texttt{itertools},
+             \texttt{pprint})
+      \item \texttt{numpy}
+      \item \texttt{pandas}
+      \item \texttt{matplotlib}
+      \item \texttt{seaborn}
+      \item \texttt{openpyxl},
+            to open XLSX files
+      \item \texttt{scipy.stats},
+            to calculate the Pearson's correlation coefficient
+      \item NetworkX,
+            a graph manipulation library
+            including an API to draw graphs with matplotlib
+    \end{itemize}
+
+    \item R
+    \begin{itemize}
+      \item R built-in modules
+            (\texttt{base}, \texttt{utils}, \texttt{stats},
+             \texttt{graphics})
+      \item R Studio, an IDE for R, for creating R Markdown notebooks
+      \item \texttt{dplyr},
+            to perform grouping operations
+            similar to SQL's \texttt{GROUP BY}
+            and Pandas' \texttt{DataFrame.groupby}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Data sources}
+  Several analyses were performed before the workshop,
+  whose processes and results were part of it.
+  The data that had been studied in every analysis
+  performed during and before the workshop came from
+  these sources:
+
+  \begin{itemize}
+    \item SciELO's JSON APIs (RESTful) from:
+    \begin{itemize}
+      \item \emph{ArticleMeta}, to get journal metadata
+      \item \emph{Ratchet}, to get access data
+    \end{itemize}
+    \item SciELO's \texttt{articlemeta} Python library,
+          an alternative way to access the ArticleMeta API
+    \item Reports from the \emph{SciELO Analytics}
+    \item \emph{SciELO Citation Index} entries from
+          the \emph{Web of Science}
+    \item \emph{Dimensions} data regarding two journals:
+          \emph{Nauplius} and
+          \emph{Brazilian Journal of Plant Physiology}
+    \item \emph{SCImagoJR}'s CSV with all SJR and H indices for 2017
+    \item \emph{Scopus}' XLSX with all the data they make available
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Introduction to the analysis}
+
+  Besides:
+
+  \begin{itemize}
+    \item Identifying which collections have data in SciELO analytics
+          (all certified and development collections,
+           besides the active independent collections)
+    \item Downloading all SciELO analytics reports
+    \item Evaluating if the network reports
+          have everything from the remaining reports
+    \item Simplifying the column names
+    \item Normalizing/cleaning the ISSN
+          when dealing with multiple collections
+    \item Normalizing the thematic area
+          (dealing with unfilled data)
+  \end{itemize}
+
+  It had been seen how to plot data,
+  with a strong emphasis on data interpretation
+  and multiple types of plots
+  (bar plots, line plots, box-and-whisker plots, heat maps,
+   scatterplots, etc.),
+  as well as subplot splitting/grouping.
+
+\end{frame}
+
+
+\begin{frame}{Previously prepared analyses}
+  \begin{itemize}
+    \item Number of indexed journals in the SciELO network
+    \item Deindexing reason in the SciELO Brazil collection
+    \item Evaluating the daily access in the SciELO Brazil collection
+    \item Three indices in Scopus 2017: CiteScore, SNIP and SJR
+    \item SCImago Journal Rank in 2017, including SJR and H index
+    \item FCR and H index in Dimensions
+    \item Google Scholar indices
+    \item Languages of research articles in SciELO Brazil,
+          by thematic area,
+             document publication year and
+             journal indexing year
+    \item Citations in the SciELO CI
+    \item Proportion of Brazil in affiliation institutions
+          in research articles
+          from journals in the SciELO Brazil collection
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Results}
+  \begin{itemize}
+    \item The proportion of Brazilian affiliations
+          of research articles in the SciELO Brazil collection
+          is decreasing
+    \item Most citations of research articles in the SciELO network
+          come from documents/journals
+          that aren't in the SciELO network.
+          For research articles written in English,
+          $76\%$ of the received citations
+          comes from documents external to the SciELO network
+    \item The normalization step when calculating
+          the FCR and its non-standard average calculation
+          can easily \emph{push down} the result
+          (e.g. a journal with $10$ documents receiving $15$ citations
+           and $3$ documents with zero citations
+           would have an average of citations of less than $7.5$,
+           before this number gets normalized
+           by the year and field of research),
+          making it an index best fit to evaluate older journals
+          that are no longer publishing
+    \item We should always look for
+          the mathematics that defines an index,
+          as that evaluation can already give us some insights
+          regarding its bias towards some documents/journals
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Results}
+  \begin{itemize}
+    \item Scopus indices should be taken with care:
+          mixing the data from all countries
+          makes it hard to compare data from SciELO and
+          from other journals
+    \item In SciELO Brazil, $95\%$ of the journals
+          marked as \emph{deceased}
+          were actually just \emph{renamed}
+          to a new journal title/ISSN
+    \item Matching data with external sources is difficult
+          without a common standardized index
+          such as the ISSN and DOI
+    \item $0.8\%$ of SciELO journals are marked in Scopus as not open,
+          which seem to be an issue regarding Scopus data
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
