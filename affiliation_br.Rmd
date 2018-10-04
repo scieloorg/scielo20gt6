@@ -1,26 +1,40 @@
 ---
 title: "Proportion of Brazil as the affiliation of documents in SciELO Brazil"
 output:
+  pdf_document:
+    df_print: kable
   html_document:
     df_print: paged
 ---
 
+Our goal is to find the proportion of Brazil in the affiliations of documents
+belonging to the SciELO Brazil collection.
+Let $d$ be a document, then the proportion we're looking for is:
+
+$$
+p(d) = \frac{\text{number of affiliations of} \; d \; \text{in Brazil}}
+            {\text{total number of affiliations of} \; d}
+$$
+
+We're going to study the $p(d)$ on an yearly basis,
+counting only the affiliations whose country we know.
+
 Let's load from SciELO Analytics
 the CSV of documents affiliations in SciELO Brazil:
 
-```{r}
+```{r cache=TRUE}
 # We shouldn't interpret Namibia (NA) as "not available"
 doc_aff <- read.csv("tabs_bra/documents_affiliations.csv", na.strings = c())
-doc_aff
+dim(doc_aff) # Number of rows and columns
+```
+
+```{r}
+as.data.frame(t(head(doc_aff, 1))) # First entry
 ```
 
 R already simplifies the column names in some sense,
 replacing the whitespaces and special characters by a dot.
-We can see the column names with:
-
-```{r}
-names(doc_aff)
-```
+We can see the names with `names(doc_aff)`.
 
 Categorical fields are known as *factors*.
 
@@ -40,19 +54,35 @@ Most entries are research articles,
 we'll work only with this document type:
 
 ```{r}
-summary(doc_aff$document.type)
+options(scipen = 6) # Avoid scientific notation in plots
+```
+
+```{r}
+as.data.frame(summary(doc_aff$document.type))
 par(mar = c(3, 9, 2, 2) + .1)
-barplot(summary(doc_aff$document.type), horiz = TRUE, las = 1)
+barplot(summary(doc_aff$document.type),
+        horiz = TRUE,
+        las = 1, # Horizontal labels
+        main = "Count of document types")
 articles <- doc_aff[doc_aff$document.type == "research-article",]
-articles
+nrow(articles)
 ```
 
 Most affiliation entries are from Brazil
 (that's somewhat expected for a Brazilian collection).
 
 ```{r}
-barplot(summary(articles$document.affiliation.country.ISO.3166,
-                maxsum = 10))
+aff_country_summary <- summary(articles$document.affiliation.country.ISO.3166,
+                               maxsum = 10)
+aff_country_summary_names <- replace(names(aff_country_summary),
+                                     names(aff_country_summary) == "",
+                                     "(Empty)")
+acs_xmidpoints <- barplot(aff_country_summary,
+                          axisnames = FALSE,
+                          main = "Count of affiliations by country")
+axis(1, at = acs_xmidpoints, las = 2,
+        labels = aff_country_summary_names, xpd = TRUE,
+        tick = FALSE)
 ```
 
 Let's build a dataset with just four columns:
@@ -76,26 +106,31 @@ dataset <- data.frame(
 )
 names(dataset) <- c("year", "pid", "br", "not_br")
 dataset <- dataset[dataset$br | dataset$not_br,]
-dataset
+head(dataset)
+nrow(dataset)
 ```
 
 As all entries are either `br` or `not_br`,
 we just need to calculate the mean of `br` for each PID.
 We'll use `dplyr` to group that result by the PID.
 
+```{r message=FALSE}
+library(dplyr) # Masks intersect, setdiff, setequal, union, filter, lag
+```
+
 ```{r}
-library(dplyr)
 proportions <- dataset %>% group_by(pid) %>% summarize(mean(br), max(year))
 proportions <- proportions[c(2, 3)]
 names(proportions) <- c("prop", "year")
-proportions
+nrow(proportions)
+head(proportions)
 ```
 
 Let's see the evolution of the mean of these proportions:
 
 ```{r}
 mprops <- proportions %>% group_by(year) %>% summarize(mean(prop))
-mprops
+min(mprops$year, na.rm = TRUE) # Oldest document publication year
 plot(
   mprops,
   type = "l",
@@ -106,13 +141,44 @@ plot(
 )
 ```
 
+The raw data:
+
+```{r}
+library(kableExtra)
+mprops_all_years <- merge(data.frame(year = 1909:2018), mprops, all.x = TRUE)
+mprops_all_years$year = as.character(mprops_all_years$year)
+kable(
+  cbind(mprops_all_years[seq(from = 1, length = 22),],
+        mprops_all_years[seq(from = 23, length = 22),],
+        mprops_all_years[seq(from = 45, length = 22),],
+        mprops_all_years[seq(from = 67, length = 22),],
+        mprops_all_years[seq(from = 89, length = 22),]),
+  digits = 5, format.args = list(nsmall = 5),
+) %>%
+  kable_styling(latex_options = "striped") %>%
+  add_header_above(c("1909-1930" = 2, "1931-1952" = 2, "1953-1974" = 2,
+                     "1975-1996" = 2, "1997-2018" = 2))
+```
+
 Is that significantly decreasing?
+To answer that, let's consider the linear regression slope,
+which should be negative,
+that is, the mean proportion should get lower
+when the year gets higher.
 
 ```{r}
 regr <- lm(mean.prop. ~ year, data.frame(mprops))
 summary(regr)
+```
+
+The slope (the `year` estimate) is negative.
+
+But is that negative for the $95\% \text{CI}$ range?
+
+```{r}
 confint(regr, level = .95)
 ```
 
-Yes! The slope (`year`, last row of `confint` result)
+Yes, it's decreasing!
+The slope (`year`, last row of `confint` result)
 is negative for the entire $95\%$ confidence interval.
