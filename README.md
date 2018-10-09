@@ -6,6 +6,7 @@ that had been presented during the *SciELO 20 Years*.
 
 The analyses that had been performed are in the following notebooks:
 
+* (*Python*) [Introduction to Pandas with ArticleMeta](articlemeta_pandas.ipynb)
 * (*Python*) [Downloading the reports/spreadsheets from SciELO Analytics](download_reports.ipynb)
 * (*Python*) [Simplifying the column names (CSV header)](simplify_header.ipynb)
 * (*Python*) [Does the Network reports have everything from the remaining reports?](network_has_everything.ipynb)
