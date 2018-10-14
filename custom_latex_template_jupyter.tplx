@@ -1,0 +1,95 @@
+((* extends "style_jupyter.tplx" *))
+((= The style_jupyter.tplx template was obtained from
+    https://github.com/t-makaro/nb_pdf_template =))
+
+
+((* block docclass *))
+\documentclass[10pt]{article}
+((* endblock docclass *))
+
+
+((* block packages *))
+
+\usepackage[american]{babel}
+\usepackage{hyphenat}
+
+\usepackage[a4paper, margin=2cm, bottom=3cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\usepackage{tabu}
+\usepackage[table]{xcolor}
+\usepackage{lscape}
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\rhead{}
+\cfoot{\emph{\nouppercase{\leftmark}}~---
+       \pagename~\thepage~/~\pageref*{LastPage}}
+
+((( super() )))
+
+\usepackage{parskip}
+
+((* if "notebook_number" in nb.metadata *))
+  \setcounter{section}{((( nb.metadata["notebook_number"] - 1 )))}
+((* endif *))
+
+% Add footnotes with the URL for all links
+\let \hrefBkp = \href
+\renewcommand{\href}[2]{\hrefBkp{#1}{#2}\footnote{\url{#1}}}
+\renewcommand{\thefootnote}{[\arabic{footnote}]}
+
+% Break the line on "####" headings, which are translated as paragraphs
+\let \paragraphBkp = \paragraph
+\renewcommand{\paragraph}[1]{\paragraphBkp{#1}\hfill\break}
+
+((* endblock packages *))
+
+
+((= Remove the filename and date from the resulting file =))
+((* block maketitle *))
+((* endblock maketitle *))
+
+
+((= Render Pandas dataframes as longtabu =))
+((* block execute_result *))
+  ((*- if "text/html" in output.data
+       and "</table>" in output.data["text/html"] -*))
+    ((( draw_prompt(cell, 'Out', 'outcolor') )))
+    ((*- set table_df = output.data["text/html"] | html2df -*))
+    ((*- set longtable = table_df.to_latex(
+                             index=False,
+                             longtable=True,
+                             multicolumn=False
+                         ).strip()
+                          .split("\n", 1)[1]
+                          .rsplit("\n", 1)[0]
+                          .replace(";", "\\babelhyphen{;}")
+                          .replace(".", "\\babelhyphen{.}")
+    -*))
+    ((*- set head_idx = longtable.find("\n\\endhead\n") + 10 -*))
+    ((*- set max_lengths = table_df | df_max_lengths -*))
+    ((*- set table_too_big = (table_df.shape[0] > 2) and
+                             (table_df.shape[1] > 5) and
+                             (max_lengths | sum > 80) -*))
+    ((*- if table_too_big -*))
+    \begin{landscape}
+    ((*- endif -*))
+    \begin{longtabu} spread 0pt {@{}
+      ((*- for width in max_lengths -*))
+        X[-((( width )))]
+      ((*- endfor -*))
+    @{}}
+      (((- longtable[:head_idx] -)))
+      \taburowcolors{white .. gray!10}
+      (((- longtable[head_idx:] -)))
+    \end{longtabu}
+    ((*- if table_too_big -*))
+    \end{landscape}
+    ((*- endif -*))
+  ((*- else -*))
+    (((- super() -)))
+  ((*- endif -*))
+((* endblock execute_result *))
