@@ -75,7 +75,7 @@ The analyses that had been performed are in the following notebooks:
     - R
     - `Notebook <affiliation_br.Rmd>`_ /
       `PDF <pdf/affiliation_br.pdf>`_ /
-      `HTML <html/affiliation_br.html>`_
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/affiliation_br.html>`_
   * - 15
     - Languages of research articles in SciELO Brazil
     - Python
