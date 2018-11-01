@@ -16,60 +16,88 @@ The analyses that had been performed are in the following notebooks:
   * - 1
     - Introduction to Pandas with ArticleMeta
     - Python
-    - `Notebook <articlemeta_pandas.ipynb>`_
+    - `Notebook <articlemeta_pandas.ipynb>`_ /
+      `PDF <pdf/01_articlemeta_pandas.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/01_articlemeta_pandas.html>`_
   * - 2
     - Downloading the reports/spreadsheets from SciELO Analytics
     - Python
-    - `Notebook <download_reports.ipynb>`_
+    - `Notebook <download_reports.ipynb>`_ /
+      `PDF <pdf/02_download_reports.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/02_download_reports.html>`_
   * - 3
     - Simplifying the column names (CSV header)
     - Python
-    - `Notebook <simplify_header.ipynb>`_
+    - `Notebook <simplify_header.ipynb>`_ /
+      `PDF <pdf/03_simplify_header.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/03_simplify_header.html>`_
   * - 4
     - Does the Network reports have everything
       from the remaining reports?
     - Python
-    - `Notebook <network_has_everything.ipynb>`_
+    - `Notebook <network_has_everything.ipynb>`_ /
+      `PDF <pdf/04_network_has_everything.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/04_network_has_everything.html>`_
   * - 5
     - Cleaning / Normalizing the ISSN
     - Python
-    - `Notebook <clean_issn.ipynb>`_
+    - `Notebook <clean_issn.ipynb>`_ /
+      `PDF <pdf/05_clean_issn.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/05_clean_issn.html>`_
   * - 6
     - Number of indexed/deindexed/active journals in the SciELO network
     - Python
-    - `Notebook <active_journals.ipynb>`_
+    - `Notebook <active_journals.ipynb>`_ /
+      `PDF <pdf/06_active_journals.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/06_active_journals.html>`_
   * - 7
     - Deindexing reason in the SciELO Brazil collection
     - Python
-    - `Notebook <deindex_reason.ipynb>`_
+    - `Notebook <deindex_reason.ipynb>`_ /
+      `PDF <pdf/07_deindex_reason.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/07_deindex_reason.html>`_
   * - 8
     - Collecting the daily access in the SciELO Brazil collection
     - Python
-    - `Notebook <daily_access.ipynb>`_
+    - `Notebook <daily_access.ipynb>`_ /
+      `PDF <pdf/08_daily_access.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/08_daily_access.html>`_
   * - 9
     - Cleaning / Normalizing the thematic area
     - Python
-    - `Notebook <clean_area.ipynb>`_
+    - `Notebook <clean_area.ipynb>`_ /
+      `PDF <pdf/09_clean_area.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/09_clean_area.html>`_
   * - 10
     - Hirsch indices from Google Scholar
     - Python
-    - `Notebook <google_scholar_h5.ipynb>`_
+    - `Notebook <google_scholar_h5.ipynb>`_ /
+      `PDF <pdf/10_google_scholar_h5.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/10_google_scholar_h5.html>`_
   * - 11
     - FCR in Dimensions
     - Python
-    - `Notebook <dimensions_fcr.ipynb>`_
+    - `Notebook <dimensions_fcr.ipynb>`_ /
+      `PDF <pdf/11_dimensions_fcr.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/11_dimensions_fcr.html>`_
   * - 12
     - Citations in the SciELO Citation Index
     - Python
-    - `Notebook <scielo_ci_citations.ipynb>`_
+    - `Notebook <scielo_ci_citations.ipynb>`_ /
+      `PDF <pdf/12_scielo_ci_citations.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/12_scielo_ci_citations.html>`_
   * - 13
     - Scopus 2017 - CiteScore, SNIP and SJR
     - Python
-    - `Notebook <scopus2017.ipynb>`_
+    - `Notebook <scopus2017.ipynb>`_ /
+      `PDF <pdf/13_scopus2017.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/13_scopus2017.html>`_
   * - 14
     - Analyzing the SCImago Journal Rank in 2017
     - Python
-    - `Notebook <scimago2017.ipynb>`_
+    - `Notebook <scimago2017.ipynb>`_ /
+      `PDF <pdf/14_scimago2017.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/14_scimago2017.html>`_
   * -
     - Proportion of Brazil as the affiliation of documents in SciELO Brazil
     - R
@@ -79,7 +107,9 @@ The analyses that had been performed are in the following notebooks:
   * - 15
     - Languages of research articles in SciELO Brazil
     - Python
-    - `Notebook <articles_languages.ipynb>`_
+    - `Notebook <articles_languages.ipynb>`_ /
+      `PDF <pdf/15_articles_languages.pdf>`_ /
+      `HTML <http://htmlpreview.github.io/?https://github.com/scieloorg/scielo20gt6/blob/master/html/15_articles_languages.html>`_
 
 Other materials in this repository include:
 
