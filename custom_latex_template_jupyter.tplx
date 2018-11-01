@@ -12,6 +12,7 @@
 
 \usepackage[american]{babel}
 \usepackage{hyphenat}
+\usepackage[hyphens]{url}
 
 \usepackage[a4paper, margin=2cm, bottom=3cm]{geometry}
 \usepackage{fancyhdr}
@@ -20,6 +21,7 @@
 \usepackage{tabu}
 \usepackage[table]{xcolor}
 \usepackage{lscape}
+\usepackage{needspace}
 
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
@@ -27,6 +29,7 @@
 \rhead{}
 \cfoot{\emph{\nouppercase{\leftmark}}~---
        \pagename~\thepage~/~\pageref*{LastPage}}
+\fancypagestyle{firststyle}{\lhead{}}
 
 ((( super() )))
 
@@ -50,6 +53,7 @@
 
 ((= Remove the filename and date from the resulting file =))
 ((* block maketitle *))
+\thispagestyle{firststyle} % No header in the first page
 ((* endblock maketitle *))
 
 
@@ -59,7 +63,25 @@
        and "</table>" in output.data["text/html"] -*))
     ((( draw_prompt(cell, 'Out', 'outcolor') )))
     ((*- set table_df = output.data["text/html"] | html2df -*))
-    ((*- set longtable = table_df.to_latex(
+
+    ((*- if table_df.empty -*))
+      \begin{center}
+        \emph{Empty DataFrame}
+      \end{center}
+      ((*- set num_cols = output.data["text/plain"]
+                                .splitlines()[-1]
+                                .split()[3] -*))
+      ((*- set render_df = table_df.columns
+                                   .to_series()
+                                   .rename(num_cols + " columns")
+                                   .iloc[1:] -*))
+      ((*- set max_lengths = [1] -*))
+    ((*- else -*))
+      ((*- set render_df = table_df -*))
+      ((*- set max_lengths = table_df | df_max_lengths -*))
+    ((*- endif -*))
+
+    ((*- set longtable = render_df.to_latex(
                              index=False,
                              longtable=True,
                              multicolumn=False
@@ -70,13 +92,18 @@
                           .replace(".", "\\babelhyphen{.}")
     -*))
     ((*- set head_idx = longtable.find("\n\\endhead\n") + 10 -*))
-    ((*- set max_lengths = table_df | df_max_lengths -*))
-    ((*- set table_too_big = (table_df.shape[0] > 2) and
-                             (table_df.shape[1] > 5) and
-                             (max_lengths | sum > 80) -*))
+    ((*- set table_too_big =
+                 (table_df.shape[0] > 0) and
+                 (table_df.shape[1] > 5) and
+                 ((max_lengths | sum) + 2 * table_df.shape[1] - 2 > 95)
+    -*))
     ((*- if table_too_big -*))
+    \begin{center}
+      \emph{The table is in the next page ...}
+    \end{center}
     \begin{landscape}
     ((*- endif -*))
+    \Needspace{9\baselineskip}
     \begin{longtabu} spread 0pt {@{}
       ((*- for width in max_lengths -*))
         X[-((( width )))]

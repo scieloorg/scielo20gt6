@@ -44,7 +44,7 @@ def html2df(html):
 
 def df_max_lengths(data):
     word_lengths = data.T.reset_index().T.applymap(
-        lambda x: max(map(len, re.sub("[-;.]", " ", str(x)).split()),
+        lambda x: max(map(len, re.sub("[-;./]", " ", str(x)).split()),
                       default=0)
     ).max().fillna(0)
     return word_lengths.values.tolist()
