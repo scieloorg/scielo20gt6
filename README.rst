@@ -121,6 +121,10 @@ Other materials in this repository include:
   * - Presentation plan in Brazilian Portuguese
     - Markdown
     - `Source <presentation_plan_ptbr.md>`_
+  * - Abstract and keywords metadata page
+    - Markdown
+    - `Source <metadata.md>`_ /
+      `PDF <pdf/metadata.pdf>`_
   * - Report slides source code
     - LaTeX
     - `Source <slides.tex>`_ /
