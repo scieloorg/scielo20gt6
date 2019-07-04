@@ -133,6 +133,10 @@ Other materials in this repository include:
 Every analysis based on the
 `SciELO Analytics reports <https://analytics.scielo.org/w/reports>`_
 uses the 2018-09-14 snapshot version of the ZIP packages.
+Links to stored copies of all these reports, by date:
+
+* `2018-06-10 <https://drive.google.com/open?id=1-FMfu8e83uAjkAQUK8xhtm2L5hn10m51>`_
+* `2018-09-14 <https://drive.google.com/open?id=1sd2R42Uq27MaA6iBGQgbVpTHjgsFNzEN>`_
 
 Some links shown/open during the workshop presentation:
 
